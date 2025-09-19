@@ -17,6 +17,7 @@ import Dashboard from "./pages/Dashboard";
 import Quiz from "./pages/Quiz";
 import Assistant from "./pages/Assistant";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import ReelsPage from "./pages/ReelsPage";
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/assistant" element={<Assistant />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/reels" element={<ReelsPage />} />
         </Routes>
       </main>
 

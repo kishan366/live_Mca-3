@@ -17,7 +17,7 @@ export default function Navbar() {
           }
         });
       },
-      { threshold: 0.5 } // section must be 50% visible
+      { threshold: 0.5 }
     );
 
     sections.forEach((section) => observer.observe(section));
@@ -51,26 +51,42 @@ export default function Navbar() {
         </Link>
         <ul className="flex space-x-6">
           {location.pathname === "/" ? (
-            navItems.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  onClick={(e) => handleScroll(e, item.id)}
-                  className={`${
-                    activeSection === item.id
-                      ? "text-blue-600 font-semibold border-b-2 border-blue-600"
-                      : "text-gray-700 hover:text-blue-600"
-                  } transition`}
+            <>
+              {navItems.map((item) => (
+                <li key={item.id}>
+                  <a
+                    href={`#${item.id}`}
+                    onClick={(e) => handleScroll(e, item.id)}
+                    className={`${
+                      activeSection === item.id
+                        ? "text-blue-600 font-semibold border-b-2 border-blue-600"
+                        : "text-gray-700 hover:text-blue-600"
+                    } transition`}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+              {/* ✅ Reels page link when on home */}
+              <li>
+                <Link
+                  to="/reels"
+                  className="text-gray-700 hover:text-blue-600 transition"
                 >
-                  {item.label}
-                </a>
+                  Reels
+                </Link>
               </li>
-            ))
+            </>
           ) : (
             <>
               <li>
                 <Link to="/courses" className="hover:text-blue-600">
                   Courses
+                </Link>
+              </li>
+              <li>
+                <Link to="/reels" className="hover:text-blue-600">
+                  Reels
                 </Link>
               </li>
               <li>

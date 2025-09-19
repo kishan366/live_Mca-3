@@ -4,8 +4,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import WrapButton from "@/components/ui/wrap-button"
 import { Globe } from "lucide-react"
-import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectCoverflow, Autoplay, Pagination } from "swiper/modules";
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import { EffectCoverflow, Autoplay, Pagination } from "swiper/modules";
 import { Skiper58, TextRoll } from "@/components/ui/skiper-ui/skiper58";
 import SparkleButton from "@/components/ui/sparkle-button";
 
