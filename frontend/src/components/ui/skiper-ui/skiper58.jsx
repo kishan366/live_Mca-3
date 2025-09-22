@@ -13,7 +13,7 @@ const navigationItems = [
 
 export const Skiper58 = () => {
   return (
-    <ul className="bs flex min-h-full w-full flex-1 flex-col items-center justify-center gap-1.5 rounded-2xl px-7 py-3 backdrop-blur-sm">
+    <ul className="bs flex min-h-full w-full flex-1 flex-col sm:flex-row flex-wrap items-center justify-center gap-3 rounded-2xl px-4 py-3 backdrop-blur-sm">
       {navigationItems.map((item, index) => (
         <li
           className="relative flex cursor-pointer flex-col items-center overflow-visible"
@@ -22,7 +22,7 @@ export const Skiper58 = () => {
           <div className="relative flex items-start">
             <TextRoll
               center
-              className="text-4xl font-extrabold uppercase leading-[0.8] tracking-[-0.03em] transition-colors lg:text-5xl"
+              className="text-[clamp(1.25rem,5vw,2.5rem)] sm:text-[clamp(1.5rem,4vw,3rem)] md:text-[clamp(2rem,3vw,3.5rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.03em] transition-colors"
             >
               {item.name}
             </TextRoll>
@@ -41,7 +41,7 @@ export const TextRoll = ({ children, className, center = false }) => {
       initial="initial"
       whileHover="hovered"
       className={cn("relative block overflow-hidden", className)}
-      style={{ lineHeight: 0.75 }}
+      style={{ lineHeight: 0.85 }}
     >
       <div>
         {children.split("").map((l, i) => {
