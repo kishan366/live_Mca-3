@@ -13,6 +13,7 @@ import RefreshPage from "./pages/RefreshPage";
 // import ForgotPassword from "./pages/auth/ForgotPassword";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
+import CourseVideos from "./pages/CourseVideos";
 import Dashboard from "./pages/Dashboard";
 import Quiz from "./pages/Quiz";
 import Assistant from "./pages/Assistant";
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/auth" element={auth()} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:id" element={<CourseDetail />} />
+          <Route path="/courses/:id/videos" element={<CourseVideos />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/assistant" element={<Assistant />} />

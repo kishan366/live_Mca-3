@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
 
 const sampleCourses = [
   {
@@ -29,6 +30,7 @@ const sampleCourses = [
 
 export default function CourseDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const course = sampleCourses.find((c) => c.id === id);
 
   if (!course) {
@@ -49,12 +51,27 @@ export default function CourseDetail() {
         ))}
       </ul>
 
-      <Link 
-        to="/login" 
-        className="bg-green-600 text-white px-6 py-3 rounded-lg shadow hover:bg-green-700 transition"
-      >
-        Enroll Now
-      </Link>
+      {/* Auth Based Enroll Button */}
+      <div>
+        {/* Not logged in → Sign In Modal */}
+        <SignedOut>
+          <SignInButton mode="modal" redirectUrl={`/courses/${id}/videos`}>
+            <button className="bg-green-600 text-white px-6 py-3 rounded-lg shadow hover:bg-green-700 transition">
+              Enroll Now
+            </button>
+          </SignInButton>
+        </SignedOut>
+
+        {/* Logged in → Go to videos page */}
+        <SignedIn>
+          <button
+            onClick={() => navigate(`/courses/${id}/videos`)}
+            className="bg-green-600 text-white px-6 py-3 rounded-lg shadow hover:bg-green-700 transition"
+          >
+            Enroll Now
+          </button>
+        </SignedIn>
+      </div>
     </div>
   );
 }
