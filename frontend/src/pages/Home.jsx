@@ -33,12 +33,12 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full bg-blue-500 text-white px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 lg:py-12 rounded-lg font-semibold shadow-lg transition">
+    <div className="w-full md:bg-emerald-950  text-white px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 lg:py-12 rounded-lg font-semibold shadow-lg transition">
       {/* Hero Section */}
       <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-center leading-snug">
         <TextRoll
           as="span"
-          className="uppercase font-extrabold tracking-[-0.03em]"
+          className="uppercase font-extrabold tracking-[-0.03em] "
         >
           BrainBuddy
         </TextRoll>
@@ -66,7 +66,12 @@ export default function Home() {
           {/* Text */}
           <div className="md:w-1/2 text-center md:text-left">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-gray-800 dark:text-white">
-              About Us
+              <TextRoll
+                as="span"
+                className="font-extrabold tracking-[-0.03em] space-x-2"
+              >
+                About Us
+              </TextRoll>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
               Our platform is designed to make

@@ -5,7 +5,9 @@ export default function CustomCursor() {
   const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
-    // Detect if touch device
+    // Hide the default cursor
+    document.body.style.cursor = "none";
+
     const checkTouch = () => {
       setIsTouch(window.matchMedia("(pointer: coarse)").matches);
     };
@@ -22,27 +24,37 @@ export default function CustomCursor() {
     }
 
     return () => {
+      // Clean up event listeners and restore the cursor
       window.removeEventListener("mousemove", move);
       window.removeEventListener("resize", checkTouch);
+      document.body.style.cursor = "auto";
     };
   }, [isTouch]);
 
-  if (isTouch) return null; // ✅ Hide cursor on mobile/tablet
+  if (isTouch) return null;
 
   return (
     <div
       style={{
         position: "fixed",
+        pointerEvents: "none",
+        zIndex: 9999,
+        transform: "translate(-50%, -50%)",
+        transition: "top 0.05s linear, left 0.05s linear",
         top: position.y,
         left: position.x,
-        width: "clamp(12px, 2vw, 20px)", // responsive size
-        height: "clamp(12px, 2vw, 20px)",
-        borderRadius: "50%",
-        backgroundColor: "rgba(255,255,255,0.7)",
-        pointerEvents: "none",
-        transform: "translate(-50%, -50%)",
-        zIndex: 9999,
-        transition: "top 0.05s linear, left 0.05s linear", // smooth movement
+
+        // Triangle shape using CSS borders
+        width: 0,
+        height: 0,
+        borderTop: "10px solid transparent",
+        borderBottom: "10px solid transparent",
+        borderLeft: "15px solid red",
+        borderRadius: "2px",
+        borderLeftColor: "black",
+
+        // Glow effect
+        filter: "drop-shadow(0 0 5px red) drop-shadow(0 0 10px red)",
       }}
     />
   );

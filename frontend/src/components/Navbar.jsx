@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 export default function Navbar() {
   const location = useLocation();
@@ -102,14 +103,18 @@ export default function Navbar() {
             </>
           )}
 
-          {/* Signup only (Login removed) */}
+          {/* Clerk Auth */}
           <li>
-            <Link
-              to="/signup"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-            >
-              Signup
-            </Link>
+            <SignedOut>
+              <SignInButton mode="modal" redirectUrl="/">
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                  Sign In
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
           </li>
         </ul>
       </div>
@@ -168,15 +173,20 @@ export default function Navbar() {
               </>
             )}
 
-            {/* Signup only (Login removed) */}
+            {/* Clerk Auth Mobile */}
             <li>
-              <Link
-                to="/signup"
-                onClick={() => setIsOpen(false)}
-                className="block bg-blue-600 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-700 transition"
-              >
-                Signup
-              </Link>
+              <SignedOut>
+                <SignInButton mode="modal" redirectUrl="/">
+                  <button className="block bg-blue-600 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-700 transition w-full">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <div className="flex justify-center">
+                  <UserButton afterSignOutUrl="/" />
+                </div>
+              </SignedIn>
             </li>
           </ul>
         </div>
