@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel } from "swiper/modules";
+import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
 
 const videos = [
@@ -32,21 +33,22 @@ const videos = [
     id: 4,
     type: "youtube",
     src: "https://www.youtube.com/embed/2ybLD6_2gKM",
-    subtitle: 'if (a > b) { printf("a is bigger"); } else { printf("b is bigger"); }',
+    subtitle:
+      'if (a > b) { printf("a is bigger"); } else { printf("b is bigger"); }',
     channel: "C Shorts Hub",
     title: "If-Else in C",
   },
 ];
 
 const WordSubtitle = ({ text, onWordClick }) => (
-  <p className="text-white text-sm mt-3 text-left px-3">
+  <p className="text-white text-sm mt-3 text-left px-3 flex flex-wrap gap-1">
     {text.split(" ").map((word, i) => (
       <span
         key={i}
         className="cursor-pointer hover:text-blue-400 transition-colors duration-200"
-        onClick={() => onWordClick(word)}
+        onClick={() => onWordClick(word.replace(/[^\w]/g, ""))}
       >
-        {word}{" "}
+        {word}
       </span>
     ))}
   </p>
@@ -58,7 +60,6 @@ export default function ReelsPage() {
   const [loading, setLoading] = useState(false);
   const videoRefs = useRef([]);
 
-  // Word info fetch
   useEffect(() => {
     if (!selectedWord) return;
     const fetchWordInfo = async () => {
@@ -81,100 +82,136 @@ export default function ReelsPage() {
     fetchWordInfo();
   }, [selectedWord]);
 
-  // जब slide बदले → बाकी videos pause
   const handleSlideChange = (swiper) => {
     videoRefs.current.forEach((ref, index) => {
       if (ref && index !== swiper.activeIndex) {
         ref.src = ref.src;
       }
     });
+    setSelectedWord(null);
   };
 
   return (
-    <div className="h-screen w-full bg-black text-white relative flex justify-center items-center">
+    <div className="h-screen w-full bg-black text-white flex justify-center items-center relative">
       <Swiper
         direction="vertical"
         modules={[Mousewheel]}
         mousewheel
         slidesPerView={1}
         onSlideChange={handleSlideChange}
-        className="h-[95%] w-[420px] rounded-xl shadow-lg overflow-hidden"
+        className="h-[95%] w-[420px] rounded-xl shadow-lg"
       >
         {videos.map((video, index) => (
-          <SwiperSlide
-            key={video.id}
-            className="flex flex-row justify-between items-center bg-black relative"
-          >
-            {/* Left side Video */}
-            <div className="w-[100%] h-full bg-black flex justify-center items-center">
+          <SwiperSlide key={video.id} className="relative bg-black">
+            <div className="relative w-full h-full flex flex-col justify-center items-center">
+              {/* Video Section */}
               {video.type === "youtube" ? (
                 <iframe
                   ref={(el) => (videoRefs.current[index] = el)}
                   src={video.src}
-                  title="C programming tutorial"
+                  title={video.title}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
-                  className="w-full h-full object-cover"
+                  className="w-full h-[70%] object-cover"
                 ></iframe>
               ) : (
                 <video
                   ref={(el) => (videoRefs.current[index] = el)}
                   src={video.src}
-                  className="h-full w-full object-cover"
+                  className="w-full h-[70%] object-cover"
                   autoPlay
                   loop
                   muted
                 />
               )}
-            </div>
-            &nbsp;
-            &nbsp;
 
-            {/* Right side Info */}
-            <div className="w-[80%] h-full bg-gray-900 p-3 flex flex-col items-start overflow-y-auto">
-              <h2 className="text-md font-semibold">{video.title}</h2>
-              <p className="text-sm text-gray-400">@{video.channel}</p>
-              <WordSubtitle text={video.subtitle} onWordClick={setSelectedWord} />
-
-              {selectedWord && (
-                <div className="mt-3 bg-white text-black p-3 rounded-lg shadow-inner">
-                  <h2 className="font-bold text-sm mb-1">
-                    Word:{" "}
-                    <span className="text-blue-600 font-semibold">{selectedWord}</span>
-                  </h2>
-                  {loading ? (
-                    <p className="text-gray-500 text-xs">Loading...</p>
-                  ) : (
-                    <p className="text-xs leading-relaxed">{wordInfo}</p>
-                  )}
-                  <div className="flex justify-end mt-2 space-x-2">
-                    <button
-                      className="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
-                      onClick={() => alert("❤️ Liked!")}
-                    >
-                      Like
-                    </button>
-                    <button
-                      className="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600"
-                      onClick={() => alert("💾 Saved!")}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600"
-                      onClick={() => setSelectedWord(null)}
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              )}
+              {/* Subtitle + Info */}
+              <div className="w-full bg-gray-900 py-3 px-2 border-t border-gray-700">
+                <h2 className="text-md font-semibold">{video.title}</h2>
+                <p className="text-sm text-gray-400">@{video.channel}</p>
+                <WordSubtitle text={video.subtitle} onWordClick={setSelectedWord} />
+              </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* --- Fixed Popup: Always visible on top of Swiper --- */}
+      <AnimatePresence>
+        {selectedWord && (
+          <>
+            {/* Background overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black z-40"
+              onClick={() => setSelectedWord(null)}
+            ></motion.div>
+
+            {/* Popup */}
+            <motion.div
+              initial={{ opacity: 0, y: 60, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 60, scale: 0.9 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="fixed z-50 bottom-10 left-1/2 transform -translate-x-1/2 
+                         bg-white/90 backdrop-blur-md text-black p-4 rounded-xl 
+                         shadow-2xl w-[90%] max-w-md max-h-[60%] overflow-y-auto"
+            >
+              <motion.h2
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="font-bold text-sm mb-1"
+              >
+                Word:{" "}
+                <span className="text-blue-600 font-semibold">{selectedWord}</span>
+              </motion.h2>
+
+              {loading ? (
+                <p className="text-gray-500 text-xs">Loading...</p>
+              ) : (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-xs leading-relaxed"
+                >
+                  {wordInfo}
+                </motion.p>
+              )}
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="flex justify-end mt-2 space-x-2"
+              >
+                <button
+                  className="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+                  onClick={() => alert("❤️ Liked!")}
+                >
+                  Like
+                </button>
+                <button
+                  className="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600"
+                  onClick={() => alert("💾 Saved!")}
+                >
+                  Save
+                </button>
+                <button
+                  className="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600"
+                  onClick={() => setSelectedWord(null)}
+                >
+                  Close
+                </button>
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
-
