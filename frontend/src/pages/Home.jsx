@@ -5,17 +5,6 @@ import "slick-carousel/slick/slick-theme.css";
 import WrapButton from "@/components/ui/wrap-button";
 import { Globe } from "lucide-react";
 import { Skiper58, TextRoll } from "@/components/ui/skiper-ui/skiper58";
-// import SparkleButton from "@/components/ui/sparkle-button";
-
-// ✅ Import icons
-// import {
-//   FaBookOpen,
-//   FaTasks,
-//   FaRobot,
-//   FaChartLine,
-//   FaCertificate,
-//   FaUsers,
-// } from "react-icons/fa";
 
 export default function Home() {
   const sliderSettings = {
